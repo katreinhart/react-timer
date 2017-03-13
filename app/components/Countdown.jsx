@@ -7,7 +7,8 @@ var Countdown = React.createClass({
   getInitialState: function() {
     return {
       count: 0,
-      countdownStatus: 'stopped'
+      countdownStatus: 'stopped',
+      countType: 'countdown'
     }
   },
   componentDidUpdate: function(prevProps, prevState){
@@ -54,7 +55,7 @@ var Countdown = React.createClass({
     var {count, countdownStatus} = this.state;
     var renderControlArea = () => {
       if (countdownStatus !== 'stopped'){
-        return <Controls countdownStatus={countdownStatus} onStatusChange={this.handleStatusChange} />
+        return <Controls countdownStatus={countdownStatus} onStatusChange={this.handleStatusChange} countType = 'countdown'/>
       } else {
         return <CountdownForm onSetCountdown = {this.handleSetCountdown}/>
       }

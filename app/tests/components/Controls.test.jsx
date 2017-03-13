@@ -11,9 +11,9 @@ describe('Controls', () => {
     expect(Controls).toExist();
   });
 
-  describe('render', ()=>{
+  describe('render in Countdown mode', ()=>{
     it('should render Pause when started', () => {
-      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus = 'started'/>);
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus = 'started' countType='countdown'/>);
       var $el = $(ReactDOM.findDOMNode(controls));
       var $pauseButton = $el.find('button:contains(Pause)');
 
@@ -21,31 +21,31 @@ describe('Controls', () => {
     });
 
     it('should render Start when paused', () => {
-      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='paused' />);
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='paused' countType='countdown'/>);
       var $el= $(ReactDOM.findDOMNode(controls));
       var $startButton = $el.find('button:contains(Start)');
 
       expect($startButton.length).toBe(1);
     });
 
-    // it('should not render Start when started', () => {
-    //   var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' />);
-    //   var $el= $(ReactDOM.findDOMNode(controls));
-    //   var $startButton = $el.find('button:contains(Start)');
-    //
-    //   expect($startButton.length).toBe(0);
-    // });
-    //
-    // it('should not render Pause when paused', () => {
-    //   var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' />);
-    //   var $el= $(ReactDOM.findDOMNode(controls));
-    //   var $pauseButton = $el.find('button:contains(Pause)');
-    //
-    //   expect($pauseButton.length).toBe(0);
-    // });
+    it('should not render Start when started', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' countType='countdown'/>);
+      var $el= $(ReactDOM.findDOMNode(controls));
+      var $startButton = $el.find('button:contains(Start)');
+
+      expect($startButton.length).toBe(0);
+    });
+
+    it('should not render Pause when paused', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='paused' countType='countdown' />);
+      var $el= $(ReactDOM.findDOMNode(controls));
+      var $pauseButton = $el.find('button:contains(Pause)');
+
+      expect($pauseButton.length).toBe(0);
+    });
 
     it('should render two buttons', () => {
-      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' />);
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' countType='countdown'/>);
       var $el= $(ReactDOM.findDOMNode(controls));
       var $button = $el.find('button');
 
@@ -53,11 +53,61 @@ describe('Controls', () => {
     });
 
     it('should render clear button', () => {
-      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' />);
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' countType='countdown'/>);
       var $el= $(ReactDOM.findDOMNode(controls));
       var $clearButton = $el.find('button:contains(Clear)');
 
       expect($clearButton.length).toBe(1);
-    })
+    });
+  });
+
+  describe('render in Timer mode', ()=>{
+    it('should render Pause when started', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus = 'started' countType='timer'/>);
+      var $el = $(ReactDOM.findDOMNode(controls));
+      var $pauseButton = $el.find('button:contains(Pause)');
+
+      expect($pauseButton.length).toBe(1);
+    });
+
+    it('should render Start when paused', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='paused' countType='timer'/>);
+      var $el= $(ReactDOM.findDOMNode(controls));
+      var $startButton = $el.find('button:contains(Start)');
+
+      expect($startButton.length).toBe(1);
+    });
+
+    it('should not render Start when started', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' countType='timer'/>);
+      var $el= $(ReactDOM.findDOMNode(controls));
+      var $startButton = $el.find('button:contains(Start)');
+
+      expect($startButton.length).toBe(0);
+    });
+
+    it('should not render Pause when paused', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='paused' countType='timer' />);
+      var $el= $(ReactDOM.findDOMNode(controls));
+      var $pauseButton = $el.find('button:contains(Pause)');
+
+      expect($pauseButton.length).toBe(0);
+    });
+
+    it('should render two buttons', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' countType='timer'/>);
+      var $el= $(ReactDOM.findDOMNode(controls));
+      var $button = $el.find('button');
+
+      expect($button.length).toBe(2);
+    });
+
+    it('should render clear button', () => {
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started' countType='timer'/>);
+      var $el= $(ReactDOM.findDOMNode(controls));
+      var $clearButton = $el.find('button:contains(Clear)');
+
+      expect($clearButton.length).toBe(1);
+    });
   });
 });
