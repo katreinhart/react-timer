@@ -1,9 +1,8 @@
-var expect = require('expect');
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var expect = require('expect');
 var $ = require('jQuery');
-var Controls = require('Controls');
+var TestUtils = require('react-addons-test-utils');
 
 var Timer = require('Timer');
 
@@ -12,18 +11,16 @@ describe('Timer', () => {
     expect(Timer).toExist();
   });
 
-  describe('HandleSetCount', () => {
-    it('should count up when started', () => {
-      var timer = TestUtils.renderIntoDocument(<Timer />);
+  it('should start count when started', (done) => {
+    var timer = TestUtils.renderIntoDocument(<Timer />);
 
-      timer.handleStatusChange('started');
-      expect(timer.state.count).toBe(0);
+    timer.handleStatusChange('started');
+    expect(timer.state.count).toBe(0);
 
-      setTimeout(() =>{
-        expect(timer.state.count).toBe(10);
-        done();
-      }, 10001);
-    });
+    setTimeout(() => {
+      expect(timer.state.count).toBe(1);
+      expect(timer.state.timerStatus).toBe('started');
+      done();
+    }, 1001);
   });
-
 });

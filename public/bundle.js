@@ -25596,15 +25596,15 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      count: 0,
-	      countdownStatus: 'stopped',
+	      timerStatus: 'stopped',
 	      countType: 'timer'
 	    };
 	  },
 	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	    if (this.state.countdownStatus !== prevState.countdownStatus) {
-	      switch (this.state.countdownStatus) {
+	    if (this.state.timerStatus !== prevState.timerStatus) {
+	      switch (this.state.timerStatus) {
 	        case 'started':
-	          this.startTimer();
+	          this.handleStart();
 	          break;
 	        case 'stopped':
 	          this.setState({ count: 0 });
@@ -25615,34 +25615,36 @@
 	      }
 	    }
 	  },
-	  startTimer: function startTimer() {
+	  componentWillUnmount: function componentWillUnmount() {
+	    clearInterval(this.timer);
+	  },
+	  handleStart: function handleStart() {
 	    var _this = this;
 
 	    this.timer = setInterval(function () {
-	      var newCount = _this.state.count + 1;
 	      _this.setState({
-	        count: newCount >= 0 ? newCount : 0
+	        count: _this.state.count + 1
 	      });
 	    }, 1000);
 	  },
 	  handleSetCount: function handleSetCount(seconds) {
 	    this.setState({
 	      count: seconds,
-	      countdownStatus: 'started'
+	      timerStatus: 'started'
 	    });
 	  },
 	  handleStatusChange: function handleStatusChange(newStatus) {
-	    this.setState({ countdownStatus: newStatus });
+	    this.setState({ timerStatus: newStatus });
 	  },
 	  render: function render() {
 	    var _this2 = this;
 
 	    var _state = this.state,
 	        count = _state.count,
-	        countdownStatus = _state.countdownStatus;
+	        timerStatus = _state.timerStatus;
 
 	    var renderControlArea = function renderControlArea() {
-	      return React.createElement(Controls, { countdownStatus: countdownStatus, onStatusChange: _this2.handleStatusChange, countType: 'timer' });
+	      return React.createElement(Controls, { countdownStatus: timerStatus, onStatusChange: _this2.handleStatusChange, countType: 'timer' });
 	    };
 	    return React.createElement(
 	      'div',
@@ -25721,7 +25723,7 @@
 
 	  propTypes: {
 	    countdownStatus: React.PropTypes.string.isRequired,
-	    onStatusChange: React.PropTypes.func.isRequired,
+	    onStatusChange: React.PropTypes.func,
 	    countType: React.PropTypes.string.isRequired
 	  },
 	  onStatusChange: function onStatusChange(newStatus) {
